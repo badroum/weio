@@ -23,7 +23,7 @@ BUILD_DIR=$PWD
 if [ $# -eq 0 ]
   then
     # No local WeIO dir supplied, get WeIO from GitHub
-    git clone --depth 1 https://github.com/nodesign/weio.git
+    git clone --depth 1 https://github.com/badroum/weio.git
     WEIO=weio
 else
     WEIO=$1
@@ -58,5 +58,3 @@ cp $WEIO/openWrt/weio-config-openwrt .config
 # Build
 echo ""
 echo "Now you can build the image by running: make -j 4"
-
-

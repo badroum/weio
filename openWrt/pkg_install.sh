@@ -12,3 +12,4 @@
 ./scripts/feeds install ntpd
 ./scripts/feeds install nano
 ./scripts/feeds install python-pip
+./scripts/feeds install avrdude
