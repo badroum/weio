@@ -168,7 +168,7 @@ if __name__ == '__main__':
     WeioEditorRouter = SockJSRouter(editorHandler.WeioEditorHandler, '/editorSocket')
 
     # DASHBOARD ROUTE websocket
-    # WeioDashboardRouter = SockJSRouter(dashboardHandler.WeioDashBoardHandler, '/dashboard')
+    WeioDashboardRouter = SockJSRouter(dashboardHandler.WeioDashBoardHandler, '/dashboard')
 
     # USER SETTINGS ROUTE websocket
     WeioSettingsHandler = SockJSRouter(userSettingsHandler.WeioSettingsHandler, '/settings')
