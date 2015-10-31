@@ -1,20 +1,20 @@
 #!/usr/bin/python
 
-### 
+###
 #
 # WEIO Web Of Things Platform
 # Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
 # All rights reserved
 #
-#               ##      ## ######## ####  #######  
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ######    ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
+#               ##      ## ######## ####  #######
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ######    ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
 #                ###  ###  ######## ####  #######
 #
-#                    Web Of Things Platform 
+#                    Web Of Things Platform
 #
 # This file is part of WEIO and is published under BSD license.
 #
@@ -43,7 +43,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Authors : 
+# Authors :
 # Uros PETREVSKI <uros@nodesign.net>
 # Drasko DRASKOVIC <drasko.draskovic@gmail.com>
 #
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     global wifiPeriodicCheck
 
     confFile = weioConfig.getConfiguration()
-    
+
     # Create symlinks to external projects
     weioFiles.symlinkExternalProjects()
 
@@ -168,10 +168,10 @@ if __name__ == '__main__':
     WeioEditorRouter = SockJSRouter(editorHandler.WeioEditorHandler, '/editorSocket')
 
     # DASHBOARD ROUTE websocket
-    WeioDashboardRouter = SockJSRouter(dashboardHandler.WeioDashBoardHandler, '/dashboard')
+    # WeioDashboardRouter = SockJSRouter(dashboardHandler.WeioDashBoardHandler, '/dashboard')
 
     # USER SETTINGS ROUTE websocket
-    WeioSettingsHandler = SockJSRouter(userSettingsHandler.WeioSettingsHandler, '/settings')    
+    WeioSettingsHandler = SockJSRouter(userSettingsHandler.WeioSettingsHandler, '/settings')
     # WIFI DETECTION ROUTE
     WeioWifiRouter = SockJSRouter(wifiHandler.WeioWifiHandler, '/wifi')
 
@@ -179,7 +179,7 @@ if __name__ == '__main__':
     WeioUpdaterRouter = SockJSRouter(updaterHandler.WeioUpdaterHandler, '/updater')
 
     # STATS ROUTER
-    WeioStatsRouter = SockJSRouter(statsHandler.WeioStatsHandler, '/stats')
+    # WeioStatsRouter = SockJSRouter(statsHandler.WeioStatsHandler, '/stats')
 
 
     secret = loginHandler.generateCookieSecret()
@@ -221,7 +221,7 @@ if __name__ == '__main__':
     if (confFile["https"] == "YES"):
         # Generate SSL key
         subprocess.check_call(confFile['absolut_root_path'] + "/scripts/generate_ssl_key.sh", shell=True)
-        
+
         # Start the HTTPS server with this key
         http_server = tornado.httpserver.HTTPServer(app,
             ssl_options={

@@ -1,18 +1,18 @@
-### 
+###
 #
 # WEIO Web Of Things Platform
 # Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
 # All rights reserved
 #
-#               ##      ## ######## ####  #######  
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ######    ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
+#               ##      ## ######## ####  #######
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ######    ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
 #                ###  ###  ######## ####  #######
 #
-#                    Web Of Things Platform 
+#                    Web Of Things Platform
 #
 # This file is part of WEIO and is published under BSD license.
 #
@@ -41,7 +41,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Authors : 
+# Authors :
 # Uros PETREVSKI <uros@nodesign.net>
 # Drasko DRASKOVIC <drasko.draskovic@gmail.com>
 #
@@ -51,7 +51,7 @@
 #openssl req -new -key weioSSL.key -out weioSSL.csr
 
 if [ ! -e weioSSL.csr ]; then
-    openssl req -nodes -newkey rsa:2048 -keyout weioSSL.key -out weioSSL.csr -subj "/C=FR/ST=Paris/L=Paris/O=WeIO/OU=IoT/CN=we-io.net"
+    openssl req -nodes -newkey rsa:2048 -keyout weioSSL.key -out weioSSL.csr -subj "/C=FR/ST=Lorient/L=Lorient/O=Puzzle/OU=Puzzle/CN=puzzle.com"
 fi
 
 

@@ -35,7 +35,7 @@ if (len(sys.argv)==3):
         # Put all relevant files here for update
         # RECIPE
         weioRecipe = {}
-        weioRecipe['download_url'] = 'http://we-io.net/downloads/update/bundle/updateRecipe'
+        weioRecipe['download_url'] = 'http://www.puzzle-lab.com/downloads/update/bundle/updateRecipe'
         weioRecipe['version'] = version
         weioRecipe['md5'] = getMd5sum(recipePath)
         weioRecipe['size'] = os.path.getsize(recipePath)
@@ -44,7 +44,7 @@ if (len(sys.argv)==3):
 
         # RECOVERY
         weioRecovery = {}
-        weioRecovery['download_url'] = 'http://we-io.net/downloads/update/bundle/weio_recovery.bin'
+        weioRecovery['download_url'] = 'http://www.puzzle-lab.com/downloads/update/bundle/weio_recovery.bin'
         weioRecovery['md5'] = getMd5sum(recoveryPath)
         weioRecovery['size'] = os.path.getsize(recoveryPath)
 

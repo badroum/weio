@@ -20,7 +20,7 @@ def isConnected(address):
 
 def checkForUpdates():
     data = {}
-    if (isConnected("we-io.net") or isConnected("www.github.com")):
+    if (isConnected("www.puzzle-lab.com") or isConnected("www.github.com")):
         config = weioConfig.getConfiguration()
         repository = ""
         print "REPO", config["weio_update_use_official_repository"]

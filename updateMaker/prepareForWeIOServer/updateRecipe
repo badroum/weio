@@ -109,7 +109,7 @@ if (platform.machine() == 'mips') :
 # DOWNLOADING PROCEDURE
 # get json to extract MD5 data
 print "getting JSON configuration from WeIO server"
-startDownload("http://we-io.net/downloads/update/updateWeio.json", targetPath+"/updateWeio.json")
+startDownload("http://www.puzzle-lab.com/downloads/update/updateWeio.json", targetPath+"/updateWeio.json")
 
 data = getJsonFromDisk(targetPath+"/updateWeio.json")
 

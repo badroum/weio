@@ -1,18 +1,18 @@
-### 
+###
 #
 # WEIO Web Of Things Platform
 # Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
 # All rights reserved
 #
-#               ##      ## ######## ####  #######  
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ######    ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
+#               ##      ## ######## ####  #######
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ######    ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
 #                ###  ###  ######## ####  #######
 #
-#                    Web Of Things Platform 
+#                    Web Of Things Platform
 #
 # This file is part of WEIO and is published under BSD license.
 #
@@ -41,7 +41,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Authors : 
+# Authors :
 # Uros PETREVSKI <uros@nodesign.net>
 # Drasko DRASKOVIC <drasko.draskovic@gmail.com>
 #
@@ -79,7 +79,7 @@ import urllib2, urllib
 
 clients = set()
 
-# Wifi detection route handler  
+# Wifi detection route handler
 class WeioUpdaterHandler(SockJSConnection):
     def __init__(self, *args, **kwargs):
         SockJSConnection.__init__(self, *args, **kwargs)
@@ -129,7 +129,7 @@ class WeioUpdaterHandler(SockJSConnection):
     # This is entering point for updater
     # First it will download only update.weio to check if there is need for an update
     # If yes than archive will be downloaded and decompressed
-    # Put flag in current config.weio that tells to OS that old weio will be removed 
+    # Put flag in current config.weio that tells to OS that old weio will be removed
     # at next restart of system
     def checkForUpdates(self, rq):
         # default mode is offline
@@ -146,7 +146,7 @@ class WeioUpdaterHandler(SockJSConnection):
         if (wifiMode=="sta"):
             data = {}
             # check if our server is reachable
-            if (self.isConnected("we-io.net")):
+            if (self.isConnected("www.puzzle-lab.com")):
                 config = weioConfig.getConfiguration()
                 repository = config["weio_update_official_repository"]
 
@@ -194,7 +194,7 @@ class WeioUpdaterHandler(SockJSConnection):
         rsp['needsUpdate'] = "NO"
 
         # version differs so we need an update
-        if (distantVersion > currentVersion): 
+        if (distantVersion > currentVersion):
             print "Update is available"
             # OK we have to update weio version
             rsp['description'] = lastUpdate["title"]
@@ -229,7 +229,7 @@ class WeioUpdaterHandler(SockJSConnection):
     def reinstallFw(self, data):
         if not(self.fwDownloadLink is None):
             # XXX Is it to check the internet connection ?
-            if (self.isConnected("we-io.net")):
+            if (self.isConnected("www.puzzle-lab.com")):
                 print "will download fw from", self.fwDownloadLink
 
                 # prepare for download
@@ -238,7 +238,7 @@ class WeioUpdaterHandler(SockJSConnection):
                 sizeCheckerCallback = ioloop.PeriodicCallback(sw, 1000)
                 # start donwloading!
                 sizeCheckerCallback.start()
-                # when finished downloading 
+                # when finished downloading
                 self.startDownload(self.fwDownloadLink, self.updateFileName)
                 sizeCheckerCallback.stop()
                 a = {}
@@ -309,8 +309,8 @@ class WeioUpdaterHandler(SockJSConnection):
     # Get MD5 checksum from file
     def getMd5sum(self, filename):
         md5 = hashlib.md5()
-        with open(filename,'rb') as f: 
-            for chunk in iter(lambda: f.read(128*md5.block_size), b''): 
+        with open(filename,'rb') as f:
+            for chunk in iter(lambda: f.read(128*md5.block_size), b''):
                  md5.update(chunk)
         return md5.hexdigest()
 
@@ -322,7 +322,7 @@ class WeioUpdaterHandler(SockJSConnection):
         """Parsing JSON data that is comming from browser into python object"""
         req = json.loads(data)
         self.serve(req)
-        
+
     def serve(self, rq):
         """Parsed input from browser ready to be served"""
         # Call callback by key directly from socket
@@ -332,7 +332,7 @@ class WeioUpdaterHandler(SockJSConnection):
             self.callbacks[request](rq)
         else :
             print "unrecognised request"
-            
+
     def on_close(self) :
         global clients
         # Remove client from the clients list and broadcast leave message

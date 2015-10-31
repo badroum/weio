@@ -4,12 +4,12 @@
  Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
  All rights reserved
 
-               ##      ## ######## ####  #######  
-               ##  ##  ## ##        ##  ##     ## 
-               ##  ##  ## ##        ##  ##     ## 
-               ##  ##  ## ######    ##  ##     ## 
-               ##  ##  ## ##        ##  ##     ## 
-               ##  ##  ## ##        ##  ##     ## 
+               ##      ## ######## ####  #######
+               ##  ##  ## ##        ##  ##     ##
+               ##  ##  ## ##        ##  ##     ##
+               ##  ##  ## ######    ##  ##     ##
+               ##  ##  ## ##        ##  ##     ##
+               ##  ##  ## ##        ##  ##     ##
                 ###  ###  ######## ####  #######
 
                     Web Of Things Platform
@@ -41,7 +41,7 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- Authors : 
+ Authors :
  Uros PETREVSKI <uros@nodesign.net>
  Drasko DRASKOVIC <drasko.draskovic@gmail.com>
 
@@ -61,10 +61,10 @@
     <script src="libs/jquery/jquery-2.0.2.min.js"> </script>
     <script type="text/javascript" src="libs/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="libs/jqBootstrapValidation.js"></script>
-        
+
     <script src="libs/weio/signin.js"> </script>
-  
-        
+
+
     <style type="text/css">
       body {
         padding-top: 40px;
@@ -119,7 +119,7 @@
         <form id="signinForm" class="form-signin" action='' method="POST">
             <h2 class="form-signin-heading">Setup admin account</h2>
             <h5 id="error" style="color:red"></h5>
-            
+
             <div class="control-group">
             <h6 style="color:gray"><p>These informations will be stored on your WeIO board and will never be sent to any extern server</p> </h6>
             <label class="control-label" for="fullName">Full name</label>
@@ -134,9 +134,9 @@
                 </div>
             </div>
 
-            
+
             <div class="control-group">
-            
+
             <label class="control-label" for="password">Password</label>
             <h6 style="color:gray"><p>This will be your main password for all WeIO services (login, ssh and samba)</p></h6>
                 <div class="controls">
@@ -170,7 +170,7 @@
 
             <div class="control-group">
             <label class="control-label" for="hostname">WeIO network board name</label>
-            <h6 style="color:gray"><p>This will be name of your WeIO board in the network (Bonjour service). For example, if you put "weio" for a name it will be called with http://weio.local in your browser</p></h6>
+            <h6 style="color:gray"><p>This will be name of your WeIO board in the network (Bonjour service). For example, if you put "weio" for a name it will be called with http://puzzle.local in your browser</p></h6>
             <input  id="hostname"
                     type="text"
                     name="boardname"
@@ -185,23 +185,23 @@
             <h6 style="color:gray"><p>WeIO gets accurate time from the Internet services but needs to know for your time zone</p></h6>
             <select id="timezones" name="timezone"></select>
             <p id="timezone-msg" style="display:none;color:red">Timezone will be changed on next system boot.</p>
-            
+
             </div>
-            
+
             <!--
             <label class="control-label" for="country">Choose country</label>
             <select id="countries"></select>
            -->
                 <label class="control-label" for="hostname">We are almost there</label>
-                <h6 style="color:gray"><p>Now you will be redirected to WeIO IDE. Remember you will find WeIO IDE on port 8080 (example : http://weio.local:8080). All your applications will be served on standard http port 80 (example : http://weio.local)</p></h6>
+                <h6 style="color:gray"><p>Now you will be redirected to WeIO IDE. Remember you will find WeIO IDE on port 8080 (example : http://puzzle.local:8080). All your applications will be served on standard http port 80 (example : http://puzzle.local)</p></h6>
                 <button type="submit" class="btn btn-large btn-primary">Finish setup</button>
             </div>
 
         </form>
-        
+
     </div> <!-- /container -->
 
-   
+
   </body>
 
 </html>

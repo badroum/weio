@@ -4,7 +4,7 @@ Load average: 0.00 0.02 0.05 1/44 7713
 [7m  PID  PPID USER     STAT   VSZ %VSZ %CPU COMMAND[0m
  7318  7135 root     S    14432  23%  18% python server.py
  7713  6476 root     R     1516   2%   9% top -n 1
- 7317     1 nobody   S     1740   3%   0% avahi-daemon: running [weio.local]
+ 7317     1 nobody   S     1740   3%   0% avahi-daemon: running [puzzle.local]
  5680     1 root     S     1540   2%   0% /sbin/netifd
   573     1 root     S     1528   2%   0% /sbin/syslogd -C16
  6476     1 root     S     1528   2%   0% /bin/ash --login
