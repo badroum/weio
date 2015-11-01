@@ -179,7 +179,7 @@ if __name__ == '__main__':
     WeioUpdaterRouter = SockJSRouter(updaterHandler.WeioUpdaterHandler, '/updater')
 
     # STATS ROUTER
-    # WeioStatsRouter = SockJSRouter(statsHandler.WeioStatsHandler, '/stats')
+    WeioStatsRouter = SockJSRouter(statsHandler.WeioStatsHandler, '/stats')
 
 
     secret = loginHandler.generateCookieSecret()
