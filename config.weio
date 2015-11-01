@@ -29,5 +29,5 @@
     "weio_board": "WeIO",
     "weio_lib_path": "weioLib",
     "weio_update_official_repository": "http://www.puzzle-lab.com/downloads/update/updateWeio.json",
-    "weio_version": "1.2"
+    "weio_version": "1.4"
 }
