@@ -3244,4 +3244,5 @@ CONFIG_PACKAGE_uboot-envtools=y
 # CONFIG_PACKAGE_uuidgen is not set
 # CONFIG_PACKAGE_whereis is not set
 CONFIG_PACKAGE_avrdude=y
-CONFIG_PACKAGE_nginx=y
+#CONFIG_PACKAGE_nginx=y
+CONFIG_PACKAGE_dfu-util=y

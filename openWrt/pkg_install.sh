@@ -13,4 +13,5 @@
 ./scripts/feeds install nano
 ./scripts/feeds install python-pip
 ./scripts/feeds install avrdude
-./scripts/feeds install nginx
+#./scripts/feeds install nginx
+./scripts/feeds install dfu-util
