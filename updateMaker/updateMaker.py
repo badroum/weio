@@ -172,10 +172,7 @@ if (len(sys.argv)>=nArguments) :
 
 
     # Revert port in local conf file
-    config["port"] = 8080
-    config["userAppPort"] = 8082
-    config["debug_mode"] = "True"
-    config["extern_projects_path_flash"] = "/Users/uros/workNow/nodesign/weIO/weio/weioUser/flash"
+    config["port"] = 80
     inputFile = open("../config.weio", 'w')
     ret = inputFile.write(json.dumps(config, indent=4, sort_keys=True))
     inputFile.close()

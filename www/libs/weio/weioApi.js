@@ -4,12 +4,12 @@
 * Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
 * All rights reserved
 *
-*               ##      ## ######## ####  #######  
-*               ##  ##  ## ##        ##  ##     ## 
-*               ##  ##  ## ##        ##  ##     ## 
-*               ##  ##  ## ######    ##  ##     ## 
-*               ##  ##  ## ##        ##  ##     ## 
-*               ##  ##  ## ##        ##  ##     ## 
+*               ##      ## ######## ####  #######
+*               ##  ##  ## ##        ##  ##     ##
+*               ##  ##  ## ##        ##  ##     ##
+*               ##  ##  ## ######    ##  ##     ##
+*               ##  ##  ## ##        ##  ##     ##
+*               ##  ##  ## ##        ##  ##     ##
 *                ###  ###  ######## ####  #######
 *
 *                    Web Of Things Platform
@@ -41,7 +41,7 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* Authors : 
+* Authors :
 * Uros PETREVSKI <uros@nodesign.net>
 * Drasko DRASKOVIC <drasko.draskovic@gmail.com>
 *
@@ -52,7 +52,7 @@
  */
 var _weio = null;
 
-//CALLBACKS//////////////////////////////////////////////////////////////////////////////////////////////////////// 
+//CALLBACKS////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * Define callbacks here and request keys
  * Each key is binded to coresponding function
@@ -83,7 +83,7 @@ $(document).ready(function() {
          * Identify server address and port to open websocket
          */
         var _addr = location.host;
-        if (location.port == "8080") {
+        if (location.port == "80") {
             var a = _addr.split(":");
             _addr = 'http://' + a[0] + ':' + port + '/api';
         } else {
@@ -91,7 +91,7 @@ $(document).ready(function() {
             _addr = a;
         }
         console.log("WebSocket connecting to " + _addr);
-        
+
         // init interrupts
         for (var i=0; i<32; i++) {
             weioInterrupts.push("");
@@ -100,16 +100,16 @@ $(document).ready(function() {
         /*
         * WebSocket openning
         */
-                    
+
         (function() {
         // Initialize the socket & handlers
         var connectToServer = function() {
             _weio = new SockJS(_addr);
-        
+
             _weio.onopen = function() {
             //clearInterval(connectRetry);
             console.log('socket opened for weio API');
-                
+
             // Client info will be sent to server
             data = {};
             data.appCodeName = navigator.appCodeName;
@@ -119,58 +119,58 @@ $(document).ready(function() {
             data.onLine = navigator.onLine;
             data.platform = navigator.platform;
             data.userAgent = navigator.userAgent;
-                
+
             uuid = _generateUUID()
             data.uuid = uuid;
-                
+
             // Say hello to server with some client data
             var rq = { "request": "_info", "data":data};
             _weio.send(JSON.stringify(rq));
-                
+
             if(typeof onWeioReady == 'function'){
                 onWeioReady();
             }
-        
+
             };
-        
+
             _weio.onmessage = function(e) {
                 // JSON data is parsed into object
                 data = JSON.parse(e.data);
                 console.log(data);
-                
+
                     if ("requested" in data) {
                         // this is instruction that was echoed from server + data as response
-                        instruction = data.requested;  
-                        if (instruction in weioCallbacks) 
+                        instruction = data.requested;
+                        if (instruction in weioCallbacks)
                             weioCallbacks[instruction](data);
                     } else if ("serverPush" in data) {
                     // this is instruction that was echoed from server + data as response
-                        instruction = data.serverPush;  
+                        instruction = data.serverPush;
                         if (instruction in weioCallbacks) {
                             weioCallbacks[instruction](data.data);
-                            
-                        } 
-                    
+
+                        }
+
                 }
             };
-        
+
             _weio.onclose = function() {
             //clearInterval(connectRetry);
             //connectRetry = setInterval(connectToServer, 500);
             console.log('socket is closed or not opened for weioApi');
-        
+
             };
-        
+
         };
         //var connectRetry = setInterval(connectToServer, 500);
         connectToServer();
         })();
-               
+
     }); /* getJSON */
 }); /* document.ready() */
 
 
-/* 
+/*
  * GLOBALS
  */
 // GPIO directions
@@ -195,7 +195,7 @@ var FALLING = 4
 /*
  * Unique UUID number of this session
  * Will be generated on oppening of websocket and will be sent with
- * every message to server 
+ * every message to server
  */
 var uuid = null;
 
@@ -203,7 +203,7 @@ function getMyUuid() {
     return uuid;
 };
 
-/* 
+/*
  * Generate unique UUID number, uuid4 conforms to standard
  */
 function _generateUUID(){
@@ -225,7 +225,7 @@ function isWeioReady() {
         return false;
 };
 
-/* 
+/*
  * Low level electronics instructions from JS
  */
 function pinMode(pin, mode) {
@@ -266,7 +266,7 @@ function dhtRead(pin, callback) {
     genericMessage("dhtRead", [pin], fname);
 };
 
-function analogRead(pin, callback) { 
+function analogRead(pin, callback) {
     // create new callback call
     var fName = callback.name;
     //console.log("callback name:" + fName);
@@ -294,7 +294,7 @@ function analogWrite(pin, value) {
 
 function proportion(value, istart, istop, ostart, ostop){
     return ostart + (ostop-ostart) * ((value -istart) / (istop - istart))
-    
+
 };
 
 function delay(period){
@@ -340,7 +340,7 @@ function getTemperature(callback) {
 	 var fName = callback.name;
 	 weioCallbacks[fName] = callback;
 	 genericMessage("getTemperature", null, fName);
-		
+
 };
 
 function getConnectedUsers(callback) {
@@ -409,12 +409,12 @@ function genericMessage(instruction, data, clbck) {
     // avoid sending messages to websocket that is not yet opened
     if (isWeioReady() != 0) {
         var askWeio;
-        
+
         if (clbck == null)
              askWeio = { "request": instruction, "data" : data }; //, "uuid" : uuid };
-         else 
+         else
              askWeio = { "request": instruction, "data" : data, "callback": clbck }; //, "uuid" : uuid };
-         
+
         _weio.send(JSON.stringify(askWeio));
     } else {
         console.log("Warning, message tried to be sent when websocket was not completely opened");
