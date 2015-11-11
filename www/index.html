@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head >
+  <title>Houat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="libs/css/dashboard.css" rel="stylesheet" />
+
+  <script src="libs/jquery/jquery-2.0.2.min.js"> </script>
+  <script src="libs/bootstrap/js/bootstrap.min.js"> </script>
+  <!--<script src="libs/weio/dashboardLinker.js"> </script>-->
+  <script src="libs/weio/wifi.js?n=1"> </script>
+
+  <script src="libs/sockJS/sockjs-0.3.min.js"> </script>
+
+  <script src="libs/weio/updater.js?n=1"> </script>
+
+  <script src="libs/chartJS/Chart.min.js"> </script>
+
+</head>
+
+<body>
+
+  <div class="user pull-right">
+    <div class="btn-group pull-right">
+      <a class="btn dropdown-toggle" data-toggle="dropdown" id="user" onclick="updateCheck()">Update</a>
+      <ul class="dropdown-menu">
+        <li><a onclick="bringUpdater()" id="needsUpdateStatus"><img src="img/spinner.gif"></img> Checking updates...</a></li>
+        <!-- <li class="divider"></li>
+        <li><a href="#reinstallFw" role="button" data-toggle="modal">Reinstall WeIO firmware</a></li>
+      -->
+    </ul>
+  </div>
+
+
+  <div class="btn-group pull-right">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" onclick="injectWifiNetworksInDropMenu()" id="connectedWifiName">
+      Scanning wifi...
+    </a>
+    <ul class="dropdown-menu" id="wifiDefaultCommands">
+    </ul>
+    <ul class="dropdown-menu" id="wifiNetworks">
+    </ul>
+
+  </div>
+  <!--   <form class="navbar-search pull-right">
+  <input type="text" class="search-query" placeholder="Search in project">
+</form> -->
+
+</div>
+
+<!-- Modal Change Wifi Network -->
+<div id="changeWifi" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalChangeWifiLabel">Connect manually to another network</h3>
+  </div>
+
+  <div class="modal-body" id="wifiParameters">
+
+    <input type="text" class="input-small" placeholder="SSID" id="wifiSSID">
+    <input type="password" class="input-small" placeholder="Password" id="wifiPassword">
+    <input type="text" class="input-small" placeholder="Encryption" id="encryption">
+
+
+    <p>You are about to change wifi network. If you continue, connection with Weio will be lost.
+      Remember that you have to switch to the same network with
+      your computer to gain again access to Weio.</p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+      <button class="btn btn-primary" onclick="javascript:connectToNewWiFi()" data-dismiss="modal">Continue</button>
+    </div>
+  </div>
+
+  <!-- END Modal Change Wifi Network   -->
+
+  <!-- Change Wifi Network Simple change-->
+  <div id="wifiPasswordPrompt" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalSimpleChangeWifiLabel"></h3>
+    </div>
+
+    <div class="modal-body" id="wifiParameters">
+      <input type="password" class="input-small" placeholder="Password" id="wifiPasswordSimple">
+
+      <p>You are about to change wifi network. If you continue, connection with Weio will be lost.
+        Remember that you have to switch to the same network with your computer to
+        gain again access to Weio.</p>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-primary" onclick="goSta()">Continue</button>
+      </div>
+    </div>
+    <!-- END Change Wifi Network Simple change -->
+
+
+
+    <!-- Modal Create Wifi Network -->
+    <div id="createWifi" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalCreateWifiLabel">Create AP network</h3>
+      </div>
+      <div class="modal-body" id="wifiParameters">
+
+        <input type="text" class="input-small" placeholder="SSID" id="wifiSSIDAP">
+        <input type="password" class="input-small" placeholder="Password" id="wifiPasswordAP">
+
+        <p>You are about to change wifi network. If you continue, connection with Weio will be lost.
+          Remember that you have to switch to the same network with your
+          computer to gain again access to Weio.</p>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          <button class="btn btn-primary" onclick="goAp()">Continue</button>
+        </div>
+      </div>
+      <!-- END Modal Change Wifi Network -->
+
+
+      <!-- Modal Updater process first screen -->
+      <div id="updateWeio" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalUpdateWeioLabel">Welcome to WeIO updater procedure</h3>
+        </div>
+        <div class="modal-body" id="updateWeioData">
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+          <button class="btn btn-primary" onclick="runUpdateProcedure()" id="updateButton">OK</button>
+        </div>
+      </div>
+      <!-- END Modal Updater process  -->
+
+
+      <!-- Modal Updater process second screen -->
+      <div id="updateWeioProcedure" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalUpdateWeioLabel">Update progress</h3>
+        </div>
+        <div class="modal-body" id="updateWeioData">
+
+          <h4 id="progressStatus"></h4>
+
+          <canvas id="updateProgressChart"></canvas>
+          <p id="updaterMessage">WeIO is updating now. Please don't touch anything. If program stucks after progress
+            bar is done try to reload this page or to reset hardware</p>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" onclick="reloadMe()" id="reloadMeButton">Reload</button>
+          </div>
+        </div>
+        <!-- END Modal Updater process  -->
+        <!-- NoInternet -->
+        <div id="noInternet" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>There is no Internet connection</h3>
+          </div>
+
+          <div class="modal-body">
+            <p>There is no Internet connection. Try to connect to the Internet or try again later</p>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+        <!-- NoInternet -->
+
+      </body>
+
+      </html>
