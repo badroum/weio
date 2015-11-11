@@ -1,19 +1,19 @@
 #!/usr/bin/env python
-### 
+###
 #
 # WEIO Web Of Things Platform
 # Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
 # All rights reserved
 #
-#               ##      ## ######## ####  #######  
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ######    ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
+#               ##      ## ######## ####  #######
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ######    ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
 #                ###  ###  ######## ####  #######
 #
-#                    Web Of Things Platform 
+#                    Web Of Things Platform
 #
 # This file is part of WEIO and is published under BSD license.
 #
@@ -42,7 +42,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Authors : 
+# Authors :
 # Uros PETREVSKI <uros@nodesign.net>
 # Drasko DRASKOVIC <drasko.draskovic@gmail.com>
 #
@@ -82,18 +82,18 @@ def saveConfiguration(conf):
 # md5 checksum
 def md5sum(filename):
     md5 = hashlib.md5()
-    with open(filename,'rb') as f: 
-        for chunk in iter(lambda: f.read(128*md5.block_size), b''): 
+    with open(filename,'rb') as f:
+        for chunk in iter(lambda: f.read(128*md5.block_size), b''):
             md5.update(chunk)
     return md5.hexdigest()
-    
+
 # upload file to server
-def uploadToServer(filename):    
-    session = ftplib.FTP('ftp.we-io.net',usr,pswd)
+def uploadToServer(filename):
+    session = ftplib.FTP('ftp.puzzle-lab.com',usr,pswd)
     print "Connected to ftp"
     file = open(filename,'rb')                  # file to send
     session.cwd('www/downloads')
-    
+
     # TODO basename filename
     session.storbinary('STOR ' + filename, file, callback = progressBar, blocksize = 1024)     # send the file
     #session.storbinary("STOR " + packetFile, file)
@@ -127,18 +127,18 @@ def getConfigJson():
     inputFile.close()
     return json.loads(rawData)
 
-# example of default configuration    
+# example of default configuration
 weio_update = {}
-weio_update['description'] = 'Bug fixes in architecture and design'
-weio_update['version'] = '0.12'
+weio_update['description'] = 'Init Version for Houat'
+weio_update['version'] = '0.1.0'
 weio_update['whatsnew'] = 'long text maybe from some file'
-weio_update['url'] = 'http://www.we-io.net/downloads/weio' + weio_update['version'] + '.tar.gz'
+weio_update['url'] = 'http://www.puzzle-lab.com/downloads/weio' + weio_update['version'] + '.tar.gz'
 weio_update['md5'] = '995884813e29f06b71a940975b202398'
 
 nArguments = 4
 
 if (len(sys.argv)>=nArguments) :
-    
+
     print
     checkVersionOnServer()
     print
@@ -147,21 +147,18 @@ if (len(sys.argv)>=nArguments) :
     for a in sys.argv:
         if (a == "local"):
             noFTP = True
- 
+
     if (noFTP is False):
         usr = raw_input("Username :")
         pswd = getpass.getpass(prompt="Password :")
 
     print "Open config.weio"
     config = getConfigJson()
-    
+
     # Overwrite local configuration file
     config["weio_version"] = sys.argv[1]
-    config["port"] = 8080
-    config["userAppPort"] = 80
-    config["debug_mode"] = "False"
-    config["extern_projects_path_flash"] = "/weioUser/flash"
-    
+    config["port"] = 80
+
     inputFile = open("../config.weio", 'w')
     ret = inputFile.write(json.dumps(config, indent=4, sort_keys=True))
     inputFile.close()
@@ -172,8 +169,8 @@ if (len(sys.argv)>=nArguments) :
     # wait... I have to finish this process before sending
     p.communicate()
     print "Finished process"
-    
-    
+
+
     # Revert port in local conf file
     config["port"] = 8080
     config["userAppPort"] = 8082
@@ -182,15 +179,15 @@ if (len(sys.argv)>=nArguments) :
     inputFile = open("../config.weio", 'w')
     ret = inputFile.write(json.dumps(config, indent=4, sort_keys=True))
     inputFile.close()
-    
+
     if (os.path.exists(packetFile)) :
-        
+
         weio_update['version'] = sys.argv[1]
         weio_update['description'] = sys.argv[2]
         url = config["weio_update_repository"]
         weio_update['url'] = url + '/' + packetFile
         weio_update['md5'] = md5sum(packetFile)
-        weio_update['whatsnew'] = open('releases.weio', 'r').read()
+        weio_update['whatsnew'] = open('releases.houat', 'r').read()
         weio_update['kill_flag'] = "NO"
 
         if (len(sys.argv)>=3):
@@ -211,10 +208,10 @@ if (len(sys.argv)>=nArguments) :
                 prgs = 0
                 filesize = os.path.getsize("update.weio")
                 uploadToServer("update.weio")
-                print "Uploading releases.weio ..."
+                print "Uploading releases.houat ..."
                 prgs = 0
-                filesize = os.path.getsize("releases.weio")
-                uploadToServer("releases.weio")
+                filesize = os.path.getsize("releases.houat")
+                uploadToServer("releases.houat")
                 print "Done uploading"
                 print
                 checkVersionOnServer()
@@ -226,13 +223,12 @@ if (len(sys.argv)>=nArguments) :
                 print "Upload didn't make it."
         else:
                print "Not sending to FTP local version is made"
-    
+
 else :
-    print 
+    print
     print "WeIO update maker : [version] [description] [seconds needed for install] [local]"
     print "local opetion means that archive won't be sent to FTP server"
     print "Store release information in releases.txt file"
     print "example : ./updateMaker 0.12 'some bug fixes'"
     print
     checkVersionOnServer()
-    

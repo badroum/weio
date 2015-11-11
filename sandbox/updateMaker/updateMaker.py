@@ -1,19 +1,19 @@
 #!/usr/bin/env python
-### 
+###
 #
 # WEIO Web Of Things Platform
 # Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
 # All rights reserved
 #
-#               ##      ## ######## ####  #######  
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ######    ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
+#               ##      ## ######## ####  #######
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ######    ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
 #                ###  ###  ######## ####  #######
 #
-#                    Web Of Things Platform 
+#                    Web Of Things Platform
 #
 # This file is part of WEIO and is published under BSD license.
 #
@@ -42,7 +42,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Authors : 
+# Authors :
 # Uros PETREVSKI <uros@nodesign.net>
 # Drasko DRASKOVIC <drasko.draskovic@gmail.com>
 #
@@ -75,13 +75,13 @@ def saveConfiguration(conf):
 # md5 checksum
 def md5sum(filename):
     md5 = hashlib.md5()
-    with open(filename,'rb') as f: 
-        for chunk in iter(lambda: f.read(128*md5.block_size), b''): 
+    with open(filename,'rb') as f:
+        for chunk in iter(lambda: f.read(128*md5.block_size), b''):
             md5.update(chunk)
     return md5.hexdigest()
-    
+
 # upload file to server
-def uploadToServer(filename):    
+def uploadToServer(filename):
     session = ftplib.FTP('ftp.we-io.net',usr,pswd)
     file = open(filename,'rb')                  # file to send
     session.cwd('www/downloads')
@@ -93,8 +93,8 @@ def progressBar(block):
     global prgs
     prgs += len(block)
     sys.stdout.write("%s%%      %s"%(str(int((100.0/filesize)*prgs)),"\r"))
-    
-# example of default configuration    
+
+# example of default configuration
 weio_update = {}
 weio_update['description'] = 'Bug fixes in architecture and design'
 weio_update['version'] = '0.12'
@@ -108,16 +108,16 @@ if (len(sys.argv)==4) :
     weio_update['description'] = sys.argv[2]
     weio_update['url'] = 'http://www.we-io.net/downloads/' + sys.argv[3]
     weio_update['md5'] = md5sum(sys.argv[3])
-    weio_update['whatsnew'] = open('releases.weio', 'r').read()
+    weio_update['whatsnew'] = open('releases.houat', 'r').read()
 
     saveConfiguration(weio_update)
-    
+
     print "Connecting to WeIO Ftp server"
     print "CTR-C to exit without uploading files"
     usr = raw_input("Username :")
     pswd = getpass.getpass(prompt="Password :")
     try :
-        
+
         print "Uploading " + sys.argv[3] + " ..."
         prgs = 0
         filesize = os.path.getsize(sys.argv[3])
@@ -126,20 +126,18 @@ if (len(sys.argv)==4) :
         prgs = 0
         filesize = os.path.getsize("update.weio")
         uploadToServer("update.weio")
-        print "Uploading releases.weio ..."
+        print "Uploading releases.houat ..."
         prgs = 0
-        filesize = os.path.getsize("releases.weio")
-        uploadToServer("releases.weio")
+        filesize = os.path.getsize("releases.houat")
+        uploadToServer("releases.houat")
         print "Done uploading"
     except ValueError:
         print ValueError
         print "Upload didn't make it."
-    
+
 else :
-    print 
+    print
     print "WeIO update maker : [version] [description] [file]"
     print "Store release information in releases.txt file"
     print "example : ./updateMaker 0.12 'some bug fixes' weioStripped0.12.tar.bz2"
     print
-
-
