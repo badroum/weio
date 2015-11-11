@@ -14,4 +14,4 @@
 ./scripts/feeds install python-pip
 ./scripts/feeds install avrdude
 #./scripts/feeds install nginx
-./scripts/feeds install dfu-programmer
+#./scripts/feeds install dfu-programmer
