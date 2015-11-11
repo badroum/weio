@@ -33,7 +33,9 @@ find weio -name '*.pyc' -delete
 find weio -name '*.less' -delete
 # kill all OS X crap
 find weio -name '.DS_Store' -delete
-
+# compress all python file
+find weio -name '*.html' -exec html-minifier --remove-comments --use-short-doctype --collapse-whitespace -o {} {}
+find weio -name '*.css' -exec cleancss -o {} {}
 # compress in every case
 tar -zcvf weio.tar.gz weio/
 
