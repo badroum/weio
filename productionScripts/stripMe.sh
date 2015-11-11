@@ -1,20 +1,20 @@
 #!/bin/bash
 
-### 
+###
 #
 # WEIO Web Of Things Platform
 # Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
 # All rights reserved
 #
-#               ##      ## ######## ####  #######  
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ######    ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
-#               ##  ##  ## ##        ##  ##     ## 
+#               ##      ## ######## ####  #######
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ######    ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
+#               ##  ##  ## ##        ##  ##     ##
 #                ###  ###  ######## ####  #######
 #
-#                    Web Of Things Platform 
+#                    Web Of Things Platform
 #
 # This file is part of WEIO and is published under BSD license.
 #
@@ -43,7 +43,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Authors : 
+# Authors :
 # Uros PETREVSKI <uros@nodesign.net>
 # Drasko DRASKOVIC <drasko.draskovic@gmail.com>
 #
@@ -60,7 +60,7 @@ fi
 
 # after all process to decompress type : tar -zxvf weio.tar.gz
 # make new dir for stripped version at level -1
-mkdir weio 
+mkdir weio
 
 # copy all visible files, ignore unvisible git files
 rsync -av --exclude=".*" --exclude="productionScripts" ../ weio
@@ -99,11 +99,11 @@ echo ""
 echo "Created archive weio.tar.gz"
 echo ""
 echo "Now do:"
-echo "$ scp -r weio.tar.gz root@puzzle.local:/tmp"
+echo "$ scp -r weio.tar.gz root@houat.local:/tmp"
 echo "and then in WeIO:"
 echo "tar -xzvf /tmp/weio.tar.gz"
 
-# make tar archive 
+# make tar archive
 # if [ "$1" == "no_compression" ]; then
 #     echo "WeIO stripped no compression is executed"
 # else
@@ -121,11 +121,8 @@ echo "tar -xzvf /tmp/weio.tar.gz"
 #     echo "Created archive weio.tar.gz"
 #     echo ""
 #     echo "Now do:"
-#     echo "$ scp -r weio.tar.gz root@puzzle.local:/tmp"
+#     echo "$ scp -r weio.tar.gz root@houat.local:/tmp"
 #     echo "and then in WeIO:"
 #     echo "tar -xzvf /tmp/weio.tar.gz"
 #
 # fi
-
-
-

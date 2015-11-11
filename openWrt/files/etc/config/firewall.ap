@@ -1,3 +1,4 @@
+#IPTABLES -A PREROUTING -t nat -i $INTIF -p tcp -d ! $PRIVATE_IP --dport http -j REDIRECT --to-port 80
 config defaults
 	option syn_flood	1
 	option input		ACCEPT
@@ -100,15 +101,15 @@ config 'zone'
         option 'input'      'ACCEPT'
         option 'output'     'ACCEPT'
         option 'forward'    'REJECT'
-        
+
 config 'forwarding'
         option 'src'        'wifi'
         option 'dest'       'lan'
-        
+
 config 'forwarding'
         option 'src'        'lan'
-        option 'dest'       'wifi'        
-        
+        option 'dest'       'wifi'
+
 
 # include a file with users custom iptables rules
 config include
@@ -136,14 +137,15 @@ config include
 #	option proto	ICMP
 #	option target	DROP
 
+#IPTABLES -A PREROUTING -t nat -i $INTIF -p tcp -d ! $PRIVATE_IP --dport http -j REDIRECT --to-port 80
 # port redirect port coming in on wan to lan
-#config redirect
-#	option src			wan
-#	option src_dport	80
-#	option dest			lan
-#	option dest_ip		192.168.16.235
-#	option dest_port	80
-#	option proto		tcp
+config redirect
+	option src			wan
+	option src_dport	80
+	option dest			lan
+	option dest_ip		127.0.0.1
+	option dest_port	8080
+	option proto		tcp
 
 # port redirect of remapped ssh port (22001) on wan
 #config redirect
