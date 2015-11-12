@@ -37,6 +37,8 @@ find weio -name '.DS_Store' -delete
 find weio -name '*.html' -exec bash -c " html-minifier --remove-comments --use-short-doctype --collapse-whitespace -o {} {}" \; -print
 find weio -name '*.css' -exec bash -c "cleancss -o {} {}" \; -print
 find weio -name '*.js' -exec bash -c "uglifyjs {} --compress --mangle -o {}" \; -print
+find weio -name '*.sh' -exec bash -c "sed 's/^[#;] .*$//' {} | sed /^$/d  > {}" \; -print
+find weio -name '*.py' -exec bash -c "sed 's/^[#;].*$//' {} | sed /^$/d  > {}" \; -print
 # compress in every case
 tar -zcvf weio.tar.gz weio/
 
