@@ -23,7 +23,7 @@
     "port": 80,
     "remote": "",
     "timezone": "GMT0",
-    "user": "Houat",
+    "user": "houat",
     "userAppPort": 8080,
     "userApp_debug_mode": "False",
     "weio_board": "Houat",
