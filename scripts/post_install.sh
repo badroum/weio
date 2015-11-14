@@ -17,5 +17,5 @@ chmod +x /etc/init.d/ntpd
 # flashing new firmware to LPC chip
 cd /weio/scripts/
 ./flash_lpc_fw.py
-./init_root_pswd.sh
+./change_root_pswd.sh houat
 cd /
