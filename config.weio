@@ -16,10 +16,10 @@
         "index.html",
         "weioMain.py"
     ],
-    "last_opened_project": "",
+    "last_opened_project": "defaultMain",
     "login_required": "NO",
     "password": "houat",
-    "play_composition_on_server_boot": "NO",
+    "play_composition_on_server_boot": "YES",
     "port": 80,
     "remote": "",
     "timezone": "GMT0",
