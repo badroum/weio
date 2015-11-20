@@ -30,5 +30,10 @@ cp base-files /lib/upgrade/keep.d/base-files
 
 # I also need here config.weio for correct url for downloading FW
 cp /weio/config.weio /tmp/weio/scripts/
+
+#change password
+cd /weio/scripts/
+sh ./change_root_pswd.sh houat
+
 # Run FW downloader script. This script will download the last version of FW and install it
 python downloadFW.py

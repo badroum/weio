@@ -34,11 +34,12 @@ find weio -name '*.less' -delete
 # kill all OS X crap
 find weio -name '.DS_Store' -delete
 # compress all html, css, js file
-find weio -name '*.html' -exec bash -c " html-minifier --remove-comments --use-short-doctype --collapse-whitespace -o {} {}" \; -print
-find weio -name '*.css' -exec bash -c "cleancss -o {} {}" \; -print
-find weio -name '*.js' -exec bash -c "uglifyjs {} --compress --mangle -o {}" \; -print
-#find weio -name '*.sh' -exec bash -c "sed 's/^[#;] .*$//' {} | sed /^$/d  > {}" \; -print
-#find . -name '*.py' -exec bash -c "sed 's/[#;].*$//' {} | sed /^$/d  > {}" \; -print
+#find weio -name '*.html' -exec bash -c " html-minifier --remove-comments --use-short-doctype --collapse-whitespace -o {} {}" \; -print
+#find weio -name '*.css' -exec bash -c "cleancss -o {} {}" \; -print
+#find weio -name '*.js' -exec bash -c "uglifyjs {} --compress --mangle -o {}" \; -print
+##find weio -name '*.sh' -exec bash -c "sed 's/^[#;] .*$//' {} | sed /^$/d  > {}" \; -print
+##find . -name '*.py' -exec bash -c "sed 's/[#;].*$//' {} | sed /^$/d  > {}" \; -print
+
 # compress in every case
 tar -zcvf weio.tar.gz weio/
 
