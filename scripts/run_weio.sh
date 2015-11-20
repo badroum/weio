@@ -87,6 +87,9 @@ if grep -q '"first_time_run": "YES"' /weio/config.weio
 then
     echo "===> FLASHING LPC FIRMWARE"
     /weio/scripts/flash_lpc_fw.py
+    #change password
+    cd /weio/scripts/
+    sh ./change_root_pswd.sh houat
     echo "===> RETREIVING BACKUP IF EXISTS"
     if [ -d "/weioUserBackup" ]; then
 

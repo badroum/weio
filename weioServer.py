@@ -105,14 +105,14 @@ from weioPlayer import WeioPlayer
 from weioLib import weioIdeGlobals
 
 # Editor web app route handler
-class WeioEditorWebHandler(loginHandler.BaseHandler):
-    #@tornado.web.authenticated
-    def get(self):
-        confFile = weioConfig.getConfiguration()
-        firstTimeSwitch = confFile['first_time_run']
-
-        path = confFile['editor_html_path']
-        self.render(path, error="")
+# class WeioEditorWebHandler(loginHandler.BaseHandler):
+#     #@tornado.web.authenticated
+#     def get(self):
+#         confFile = weioConfig.getConfiguration()
+#         firstTimeSwitch = confFile['first_time_run']
+#
+#         path = confFile['editor_html_path']
+#         self.render(path, error="")
 
 # Periodic callback that checks button state for AP and STA
 # if AP+STA over 3 seconds than reset

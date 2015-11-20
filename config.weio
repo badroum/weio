@@ -8,7 +8,7 @@
     "extern_projects_path_flash": "/weioUser/flash",
     "extern_projects_path_sd": "/weioUser/sd",
     "extern_projects_path_usbFlash": "/weioUser/usbFlash",
-    "first_time_run": "NO",
+    "first_time_run": "YES",
     "https": "NO",
     "ip": "0.0.0.0",
     "kill_flag": "YES",
