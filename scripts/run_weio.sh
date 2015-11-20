@@ -88,8 +88,10 @@ then
     echo "===> FLASHING LPC FIRMWARE"
     /weio/scripts/flash_lpc_fw.py
     #change password
+    echo "===> CHANGE PASSWORD"
     cd /weio/scripts/
     sh ./change_root_pswd.sh houat
+    sed 's/"first_time_run": "YES",.*$/"first_time_run": "NO",/' -i config.weio
     echo "===> RETREIVING BACKUP IF EXISTS"
     if [ -d "/weioUserBackup" ]; then
 
