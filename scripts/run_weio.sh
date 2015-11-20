@@ -85,13 +85,13 @@ avahi-daemon -D
 
 if grep -q '"first_time_run": "YES"' /weio/config.weio
 then
-    echo "===> FLASHING LPC FIRMWARE"
-    /weio/scripts/flash_lpc_fw.py
+    #echo "===> FLASHING LPC FIRMWARE"
+    #/weio/scripts/flash_lpc_fw.py
     #change password
     echo "===> CHANGE PASSWORD"
     cd /weio/scripts/
     sh ./change_root_pswd.sh houat
-    sed 's/"first_time_run": "YES",.*$/"first_time_run": "NO",/' -i config.weio
+    sed 's/"first_time_run": "YES",.*$/"first_time_run": "NO",/' -i /weio/config.weio
     echo "===> RETREIVING BACKUP IF EXISTS"
     if [ -d "/weioUserBackup" ]; then
 
