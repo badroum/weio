@@ -76,8 +76,8 @@ from handlers import dashboardHandler
 from handlers import userSettingsHandler
 
 #Import signin and login handler
-from handlers import loginHandler
-from handlers import signinHandler
+# from handlers import loginHandler
+# from handlers import signinHandler
 
 # IMPORT WIFI DETECTION AND CONFIGURATION
 from handlers import wifiHandler

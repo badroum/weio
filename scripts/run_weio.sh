@@ -91,6 +91,7 @@ then
     echo "===> CHANGE PASSWORD"
     cd /weio/scripts/
     sh ./change_root_pswd.sh houat
+    sh ./change_boardname.sh houat
     sed 's/"first_time_run": "YES",.*$/"first_time_run": "NO",/' -i /weio/config.weio
     echo "===> RETREIVING BACKUP IF EXISTS"
     if [ -d "/weioUserBackup" ]; then

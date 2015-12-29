@@ -29,5 +29,5 @@
     "weio_board": "Houat",
     "weio_lib_path": "weioLib",
     "weio_update_official_repository": "http://www.puzzle-lab.com/downloads/update/updateWeio.json",
-    "weio_version": "0.1.0"
+    "weio_version": "0.1"
 }
