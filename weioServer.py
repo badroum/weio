@@ -1,54 +1,5 @@
 #!/usr/bin/python
 
-###
-#
-# WEIO Web Of Things Platform
-# Copyright (C) 2013 Nodesign.net, Uros PETREVSKI, Drasko DRASKOVIC
-# All rights reserved
-#
-#               ##      ## ######## ####  #######
-#               ##  ##  ## ##        ##  ##     ##
-#               ##  ##  ## ##        ##  ##     ##
-#               ##  ##  ## ######    ##  ##     ##
-#               ##  ##  ## ##        ##  ##     ##
-#               ##  ##  ## ##        ##  ##     ##
-#                ###  ###  ######## ####  #######
-#
-#                    Web Of Things Platform
-#
-# This file is part of WEIO and is published under BSD license.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-# 1. Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-# 2. Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
-# 3. All advertising materials mentioning features or use of this software
-#    must display the following acknowledgement:
-#    This product includes software developed by the WeIO project.
-# 4. Neither the name of the WeIO nor the
-# names of its contributors may be used to endorse or promote products
-# derived from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY WEIO PROJECT AUTHORS AND CONTRIBUTORS ''AS IS'' AND ANY
-# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL WEIO PROJECT AUTHORS AND CONTRIBUTORS BE LIABLE FOR ANY
-# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Authors :
-# Uros PETREVSKI <uros@nodesign.net>
-# Drasko DRASKOVIC <drasko.draskovic@gmail.com>
-#
-###
-
 import os, sys, platform, signal
 
 import tornado
@@ -59,6 +10,8 @@ from sockjs.tornado import SockJSRouter, SockJSConnection
 
 import json, functools
 import subprocess
+import multiprocessing
+import threading
 
 # IMPORT EDITOR CLASSES, this connects editor webapp with tornado server
 from handlers import editorHandler #, WeioEditorStopHandler, WeioEditorPlayHandler
@@ -76,8 +29,8 @@ from handlers import dashboardHandler
 from handlers import userSettingsHandler
 
 #Import signin and login handler
-# from handlers import loginHandler
-# from handlers import signinHandler
+from handlers import loginHandler
+from handlers import signinHandler
 
 # IMPORT WIFI DETECTION AND CONFIGURATION
 from handlers import wifiHandler
@@ -88,9 +41,12 @@ from handlers import updaterHandler
 # IMPORT STATS HANDLER
 from handlers import statsHandler
 
+# IMPORT API
+from handlers import weioApi
+from weioLib import weioUserApi
 
 # IMPORT WEIO BUTTONS OBJECT
-from weioLib import weioWifiButtons
+# from weioLib import weioWifiButtons
 
 # IMPORT WEIO FILE SUPPORT
 from weioLib import weioFiles
@@ -99,10 +55,13 @@ from weioLib import weioFiles
 from weioWifi import weioWifi
 
 # Import WeioPlayer class
-from weioPlayer import WeioPlayer
+# from weioPlayer import WeioPlayer
+from weioLib import weioUserApi
 
 # Import global variables for main Tornado
 from weioLib import weioIdeGlobals
+# Import globals for user Tornado
+from weioLib import weioRunnerGlobals
 
 # Editor web app route handler
 class WeioEditorWebHandler(loginHandler.BaseHandler):
@@ -116,24 +75,42 @@ class WeioEditorWebHandler(loginHandler.BaseHandler):
 
 # Periodic callback that checks button state for AP and STA
 # if AP+STA over 3 seconds than reset
-def checkWifiButtons() :
-    global wifiButtons
-    state = wifiButtons.checkButtons()
-    if (state is not None) :
-        print state
-        if (state == "reset"):
-            exit() # only tornado reset
-        elif (state == "ap"):
-            pass
-            # go to ap
-        elif (state == "sta"):
-            pass
-            # go to sta
+# def checkWifiButtons() :
+#     global wifiButtons
+#     state = wifiButtons.checkButtons()
+#     if (state is not None) :
+#         print state
+#         if (state == "reset"):
+#             exit() # only tornado reset
+#         elif (state == "ap"):
+#             pass
+#             # go to ap
+#         elif (state == "sta"):
+#             pass
+#             # go to sta
 
 if __name__ == '__main__':
+    ###
+    # Initialize global USER API instances
+    ###
+    # m = multiprocessing.Manager()
+    weioUserApi.attach =  weioUserApi.WeioAttach()
+    #weioUserApi.shared =  weioUserApi.WeioSharedVar()
+    weioUserApi.console =  weioUserApi.WeioPrint()
+
+    manager = multiprocessing.Manager()
+    weioUserApi.sharedVar = manager.dict()
+
+    # weioMsg
+    weioUserApi.weioServerMsg = weioUserApi.WeioServerMsg(weioRunnerGlobals.QIN, weioRunnerGlobals.userAgentMessage())
+
+    # weioConnUuids
+    weioRunnerGlobals.weioConnUuids = manager.list()
+    weioUserApi.weioConns = weioRunnerGlobals.weioConnUuids
+
     # Take configuration from conf file and use it to define parameters
-    global wifiButtons
-    global wifiPeriodicCheck
+    # global wifiButtons
+    # global wifiPeriodicCheck
 
     confFile = weioConfig.getConfiguration()
 
@@ -153,9 +130,12 @@ if __name__ == '__main__':
     ###
     # Routers
     ###
+    # API ROUTE websocket
+    apiRouter = SockJSRouter(weioApi.WeioApiHandler, '/api')
+    # USER SETTINGS ROUTE websocket
+    WeioSettingsHandler = SockJSRouter(userSettingsHandler.WeioSettingsHandler, '/settings')
     # WIFI DETECTION ROUTE
     WeioWifiRouter = SockJSRouter(wifiHandler.WeioWifiHandler, '/wifi')
-
     # UPDATER ROUTE
     WeioUpdaterRouter = SockJSRouter(updaterHandler.WeioUpdaterHandler, '/updater')
 
@@ -175,6 +155,8 @@ if __name__ == '__main__':
         debugMode = True
 
     app = tornado.web.Application(
+                            list(apiRouter.urls) +
+                            list(WeioSettingsHandler.urls) +
                             list(WeioWifiRouter.urls) +
                             list(WeioUpdaterRouter.urls) +
                                 [(r"/", WeioEditorWebHandler),
@@ -203,6 +185,14 @@ if __name__ == '__main__':
 
     http_server.listen(tornado.options.options.port, address=confFile['ip'])
 
+    # for key in weioUserApi.attach.procs:
+    #     #print key
+    #     t = threading.Thread(target=weioUserApi.attach.procs[key].procFnc,
+    #                 args=weioUserApi.attach.procs[key].procArgs)
+    #     t.daemon = True
+    #     # Start it
+    #     t.start()
+    #     #print "STARTING PROCESS PID", t.pid
 
     logging.info(" [*] Listening on " + confFile['ip'] + ":" + str(confFile['port']))
 
@@ -217,7 +207,7 @@ if __name__ == '__main__':
     # This will start wathcing process, note that all python modules that has been modified will be reloaded directly
     # tornado.autoreload.start(tornado.ioloop.IOLoop.instance())
 
-    wifiButtons = weioWifiButtons.WifiButtons()
+    # wifiButtons = weioWifiButtons.WifiButtons()
 
     # Activate buttons only when hardware is ready
     #periodic = tornado.ioloop.PeriodicCallback(checkWifiButtons, 100)
@@ -231,14 +221,14 @@ if __name__ == '__main__':
     	weioIdeGlobals.WIFI.periodicCheck = tornado.ioloop.PeriodicCallback(weioIdeGlobals.WIFI.checkConnection, 5000)
         weioIdeGlobals.WIFI.periodicCheck.start()
 
-    weioIdeGlobals.PLAYER = WeioPlayer()
-
-    # Start User Tornado
-    weioIdeGlobals.PLAYER.startUserTornado()
+    # weioIdeGlobals.PLAYER = WeioPlayer()
+    #
+    # # Start User Tornado
+    # weioIdeGlobals.PLAYER.startUserTornado()
 
     # Starting the last user program
-    if (confFile['play_composition_on_server_boot'] == "YES"):
-        weioIdeGlobals.PLAYER.play()
+    # if (confFile['play_composition_on_server_boot'] == "YES"):
+    #     weioIdeGlobals.PLAYER.play()
 
     ########################################################## SIGNAL HANDLER
     def sig_handler(sig, frame):

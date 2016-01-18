@@ -1,7 +1,7 @@
 from weioLib.weioIO import *
 import json
 
-from sockjs.tornado import SockJSConnection
+from sockjs.tornado import SockJSRouter, SockJSConnection
 
 from weioLib.weioParser import weioSpells
 from weioLib.weioParser import weioUserSpells
@@ -9,13 +9,30 @@ from weioLib import weioRunnerGlobals
 
 import uuid
 import os
+# IMPORT BASIC CONFIGURATION FILE
+from weioLib import weioConfig
+
+import subprocess
+import platform
+
+
+clients = set()
 
 class WeioApiHandler(SockJSConnection):
     def __init__(self, *args, **kwargs):
         SockJSConnection.__init__(self, *args, **kwargs)
-        #self.connections = weioRunnerGlobals.weioConnections
+        self.errObject = []
+        self.errReason = ""
 
+        self.callbacks = {
+        'updateSettings' : self.updateUserData,
+        'updataNetwork' : self.updateNetworkData
+        }
+
+    # @weioUnblock.unblock
     def on_open(self, request):
+        global clients
+        clients.add(self)
         # Add the connection to the connections dictionary
         # Do not forget the lock - this handler is called asynchronoisly,
         # and the weioRunnerGlobals.weioConnections[] is accessed in the same time by
@@ -89,6 +106,7 @@ class WeioApiHandler(SockJSConnection):
 
 
     def on_close(self):
+        global clients
         with weioRunnerGlobals.lockConn:
             self.connection_closed = True
             print "*SYSOUT* Client with IP address: " + self.ip + " disconnected from server"
@@ -98,3 +116,5 @@ class WeioApiHandler(SockJSConnection):
                 if (conn == self):
                     weioRunnerGlobals.weioConnections.pop(connUuid)
                     weioRunnerGlobals.weioConnUuids.remove(connUuid)
+        # Remove client from the clients list and broadcast leave message
+        clients.remove(self)
